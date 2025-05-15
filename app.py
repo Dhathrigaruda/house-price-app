@@ -5,7 +5,7 @@ import os
 import urllib.request
 
 
-model_url = 'https://drive.google.com/uc?export=download&id=1VfUqMq4enl92LuA-kjCqA_VIX_xAlVFw'
+model_url = 'https://www.dropbox.com/scl/fi/0rmj62y9z3767ou6aubn4/random_forest_model-1.pkl?rlkey=1una1on12h7hv6iegxt1rufhi&st=hndqo42n&dl=1'
 
 if not os.path.exists('random_forest_model.pkl'):
     urllib.request.urlretrieve(model_url, 'random_forest_model.pkl')
