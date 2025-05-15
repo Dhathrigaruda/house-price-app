@@ -1,0 +1,43 @@
+import streamlit as st
+import pandas as pd
+import joblib
+import os
+import urllib.request
+
+
+model_url = 'https://drive.google.com/uc?export=download&id=1VfUqMq4enl92LuA-kjCqA_VIX_xAlVFw'
+
+if not os.path.exists('random_forest_model.pkl'):
+    urllib.request.urlretrieve(model_url, 'random_forest_model.pkl')
+
+model = joblib.load('random_forest_model.pkl')
+
+
+st.title("California House Price Prediction")
+
+# Input fields for the model features
+MedInc = st.number_input('Median Income (MedInc)', 0.0, 20.0, 3.5)
+HouseAge = st.number_input('House Age (HouseAge)', 1, 100, 30)
+AveRooms = st.number_input('Average Rooms (AveRooms)', 0.0, 20.0, 5.0)
+AveBedrms = st.number_input('Average Bedrooms (AveBedrms)', 0.0, 10.0, 1.0)
+Population = st.number_input('Population', 0, 50000, 1000)
+AveOccup = st.number_input('Average Occupancy (AveOccup)', 0.0, 10.0, 3.0)
+Latitude = st.number_input('Latitude', 30.0, 42.0, 34.0)
+Longitude = st.number_input('Longitude', -125.0, -114.0, -118.0)
+
+# Prepare data for prediction
+input_df = pd.DataFrame({
+    'MedInc': [MedInc],
+    'HouseAge': [HouseAge],
+    'AveRooms': [AveRooms],
+    'AveBedrms': [AveBedrms],
+    'Population': [Population],
+    'AveOccup': [AveOccup],
+    'Latitude': [Latitude],
+    'Longitude': [Longitude]
+})
+
+# Button to make prediction
+if st.button('Predict'):
+    pred = model.predict(input_df)[0]
+    st.success(f"Estimated Median House Value: ${pred * 100000:.2f}")
